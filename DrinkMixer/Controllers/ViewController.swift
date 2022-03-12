@@ -5,7 +5,7 @@
 //  Created by Jing Li on 11/22/21.
 //
 
-import SwiftUI
+import UIKit
 
 class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
