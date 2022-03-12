@@ -33,14 +33,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     private let headerId = "headerId"
     private let ingredientsCellId = "ingredientsCellId"
     private let instructionCellId = "instructionCellId"
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    // pasted:
-    var statusBarView: UIView!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,7 +62,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         
         //collectionView.contentInsetAdjustmentBehavior = .never
  
-        // transparant top bar
+        // transparant top bar, with white colored nav bar title text and barButton text.
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -78,31 +71,9 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         
         navigationController?.navigationBar.tintColor = .white
         
-        // white text on status bar
+        // white text on status bar.
         navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
         navigationController?.navigationBar.barStyle = .black
-        //setNeedsStatusBarAppearanceUpdate()
-
-/*
-        // pasted:
-        //set the navigation bar to a transparent background
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.isTranslucent = true
-        
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-               
-        //set status bar with white text
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
-
-        
-        statusBarView = UIView(frame: statusBarFrame)
-        statusBarView.isOpaque = false
-        statusBarView.backgroundColor = .clear
-        view.addSubview(statusBarView)
-*/
-
     }
     
     // MARK: UICollectionView data source
@@ -156,9 +127,54 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     
     // MARK: UIScrollView delegate
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentOffsetY = collectionView.contentOffset.y
         
+        // get topBarHeight
+        let statusBarFrame: CGRect
+        let navigationBarFrame: CGRect
+
+        if #available(iOS 13.0, *) {
+            let keyWindowScene = UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .compactMap { $0 as? UIWindowScene }.first
+            statusBarFrame = keyWindowScene?.statusBarManager?.statusBarFrame ?? .zero
+        } else {
+            statusBarFrame = UIApplication.shared.statusBarFrame
+        }
+
+        navigationBarFrame = navigationController?.navigationBar.frame ?? .zero
+
+        let topBarHeight = statusBarFrame.height + navigationBarFrame.height
+        
+        let headerHeight = view.frame.width
+        
+        // total scroll distance for top bar dark to light appearance transition.
+        let offSetHeight = headerHeight - topBarHeight
+        
+        // offset ratio.
+        var offSet = abs(contentOffsetY) / offSetHeight
+        
+        if offSet > 1 {
+            offSet = 1
+        }
+        
+        // set status bar text color.
+        if offSet < 0.5 {
+            navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
+            navigationController?.navigationBar.barStyle = .black
+        } else {
+            navigationController?.navigationBar.overrideUserInterfaceStyle = .light
+            navigationController?.navigationBar.barStyle = .default
+        }
+        
+        let topBarBackgroundColor = UIColor(white: 1, alpha: offSet)
+        let navBarTextColor = UIColor(hue: 1, saturation: 0, brightness: 1 - offSet, alpha: 1)
+        
+        navigationController?.navigationBar.standardAppearance.backgroundColor = topBarBackgroundColor
+        
+        navigationController?.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: navBarTextColor]
+        navigationController?.navigationBar.tintColor = navBarTextColor
     }
-    
 }
 
 class DetailHeader: BaseCell {
