@@ -10,6 +10,7 @@ import SwiftUI
 
 class DetailViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    // MARK: Properties
     var drinkId: String? {
         didSet {
             guard let drinkId = drinkId else {
@@ -81,7 +82,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         // white text on status bar
         navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
         navigationController?.navigationBar.barStyle = .black
-        setNeedsStatusBarAppearanceUpdate()
+        //setNeedsStatusBarAppearanceUpdate()
 
 /*
         // pasted:
@@ -105,16 +106,13 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
 
     }
     
+    // MARK: UICollectionView data source
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let detailHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath ) as! DetailHeader
         if let imageURL = drinkItem?.imageURL {
             detailHeader.headerImageView.loadImageFromUrlString(urlString: imageURL)
         }
         return detailHeader
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.width)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -130,6 +128,11 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
             cell.instructionString = drinkItem?.instructions
             return cell
         }
+    }
+    
+    // MARK: UICollectionView flowLayout delegate
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.width)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -150,6 +153,11 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 16, left: 8, bottom: 0, right: 8)
+    }
+    
+    // MARK: UIScrollView delegate
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
     }
     
 }

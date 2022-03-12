@@ -8,6 +8,7 @@
 import SwiftUI
 
 class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    // MARK: Properties
     var cocktailDrinks: [DrinkItem]?
     
     var cellID = "cellID"
@@ -23,6 +24,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupDrinks()
     }
     
+    // MARK: UICollectionView data source
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let cocktailDrinks = cocktailDrinks {
             return cocktailDrinks.count
@@ -44,6 +46,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
+    // MARK: UICollectionView delegate flowlayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 130, height: 200)
     }
