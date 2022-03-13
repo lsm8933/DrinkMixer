@@ -64,7 +64,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ingredientsCellId, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ingredientsCellId, for: indexPath) as! IngredientsCell
             return cell
         } else { //  if indexPath.item == 1
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: instructionCellId, for: indexPath) as! InstructionCell
@@ -175,6 +175,7 @@ class DetailHeader: BaseCell {
     let headerImageView: UrlImageView = {
         let iv = UrlImageView()
         iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
         //iv.image = UIImage(named: "drink_margarita")
         return iv
     }()
@@ -194,9 +195,28 @@ class DetailHeader: BaseCell {
 }
 
 class IngredientsCell: BaseCell {
+    let headerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ingredients"
+        label.font = .boldSystemFont(ofSize: 22)
+        return label
+    }()
+    
+    let ingredientsViewController = IngredientsViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    
     override func setupViews() {
         super.setupViews()
         
         backgroundColor = .systemCyan
+                
+        addSubview(headerLabel)
+        addSubview(ingredientsViewController.collectionView)
+        
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        ingredientsViewController.collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": headerLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": ingredientsViewController.collectionView!]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[v0]-16-[v1]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": headerLabel, "v1": ingredientsViewController.collectionView!]))
     }
 }

@@ -11,7 +11,6 @@ class InstructionCell: BaseCell {
     
     var instructionString: String? {
         didSet {
-            //print(instructionString)
             showReadableInstruction(rawInstructionText: instructionString)
         }
     }
