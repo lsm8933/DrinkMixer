@@ -190,7 +190,6 @@ class DetailHeader: BaseCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : headerImageView]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : headerImageView]))
-
     }
 }
 
@@ -207,7 +206,7 @@ class IngredientsCell: BaseCell {
     override func setupViews() {
         super.setupViews()
         
-        backgroundColor = .systemCyan
+        //backgroundColor = .systemCyan
                 
         addSubview(headerLabel)
         addSubview(ingredientsViewController.collectionView)
