@@ -8,6 +8,12 @@
 import UIKit
 
 class IngredientsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    var ingredientsToMeasure: [(String?, String?)]? {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
+    
     private let cellId = "cellId"
     
     override func viewDidLoad() {
@@ -19,11 +25,18 @@ class IngredientsViewController: UICollectionViewController, UICollectionViewDel
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        if let count = ingredientsToMeasure?.count {
+            return count
+        }
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let ingredientItemCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! IngredientItemCell
+        if let ingredientsToMeasure = ingredientsToMeasure {
+            ingredientItemCell.ingredientName = ingredientsToMeasure[indexPath.item].0
+            ingredientItemCell.measure = ingredientsToMeasure[indexPath.item].1
+        }
         return ingredientItemCell
     }
     
@@ -34,8 +47,16 @@ class IngredientsViewController: UICollectionViewController, UICollectionViewDel
 
 
 class IngredientItemCell: BaseCell {
-    var measure: String?
-    var ingredientName: String?
+    var measure: String? {
+        didSet {
+            measureLabel.text = measure
+        }
+    }
+    var ingredientName: String? {
+        didSet {
+            ingredientNameLabel.text = ingredientName
+        }
+    }
     
     let measureLabel: UILabel = {
         let label = UILabel()

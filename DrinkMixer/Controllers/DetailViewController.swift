@@ -65,6 +65,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ingredientsCellId, for: indexPath) as! IngredientsCell
+            cell.ingredientsViewController.ingredientsToMeasure = drinkItem?.ingredientsToMeasure
             return cell
         } else { //  if indexPath.item == 1
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: instructionCellId, for: indexPath) as! InstructionCell

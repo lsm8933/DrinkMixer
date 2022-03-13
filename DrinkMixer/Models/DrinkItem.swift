@@ -51,6 +51,13 @@ struct DrinkItem: Codable {
     var ingredientMeasure14: String?
     var ingredientMeasure15: String?
     
+    var ingredientsToMeasure: [(String?, String?)] {
+        let ingredientToMeasureWithNilItems = [(ingredient1, ingredientMeasure1), (ingredient2, ingredientMeasure2), (ingredient3, ingredientMeasure3), (ingredient4, ingredientMeasure4), (ingredient5, ingredientMeasure5), (ingredient6, ingredientMeasure6), (ingredient7, ingredientMeasure7), (ingredient8, ingredientMeasure8), (ingredient9, ingredientMeasure9), (ingredient10, ingredientMeasure10), (ingredient11, ingredientMeasure11), (ingredient12, ingredientMeasure12), (ingredient13, ingredientMeasure13), (ingredient14, ingredientMeasure14), (ingredient15, ingredientMeasure15)]
+        let ingredientToMeasure = ingredientToMeasureWithNilItems.filter { $0 != nil || $1 != nil }
+        
+        return ingredientToMeasure
+    }
+    
     enum CodingKeys: String, CodingKey {
         case name = "strDrink"
         case id = "idDrink"
