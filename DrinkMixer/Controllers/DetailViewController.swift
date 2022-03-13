@@ -33,47 +33,20 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     private let headerId = "headerId"
     private let ingredientsCellId = "ingredientsCellId"
     private let instructionCellId = "instructionCellId"
-        
+    
+    private var headerHeight: CGFloat?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        headerHeight = view.frame.width * 3 / 4
         
         //collectionView.backgroundColor = .red
         collectionView.register(DetailHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(IngredientsCell.self, forCellWithReuseIdentifier: ingredientsCellId)
         collectionView.register(InstructionCell.self, forCellWithReuseIdentifier: instructionCellId)
         
-        // set inset of collection view to the sum of nav bar and status bar heights.
-        let statusBarFrame: CGRect
-        let navigationBarFrame: CGRect
-
-        if #available(iOS 13.0, *) {
-            let keyWindowScene = UIApplication.shared.connectedScenes
-                .filter { $0.activationState == .foregroundActive }
-                .compactMap { $0 as? UIWindowScene }.first
-            statusBarFrame = keyWindowScene?.statusBarManager?.statusBarFrame ?? .zero
-        } else {
-            statusBarFrame = UIApplication.shared.statusBarFrame
-        }
-
-        navigationBarFrame = navigationController?.navigationBar.frame ?? .zero
-
-        let topBarHeight = statusBarFrame.height + navigationBarFrame.height
-        collectionView.contentInset.top = -topBarHeight
-        
-        //collectionView.contentInsetAdjustmentBehavior = .never
- 
-        // transparant top bar, with white colored nav bar title text and barButton text.
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.standardAppearance = appearance
-        //navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        navigationController?.navigationBar.tintColor = .white
-        
-        // white text on status bar.
-        navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
-        navigationController?.navigationBar.barStyle = .black
+        setupTopBarAppearance()
     }
     
     // MARK: UICollectionView data source
@@ -102,7 +75,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     
     // MARK: UICollectionView flowLayout delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.width)
+        return CGSize(width: view.frame.width, height: headerHeight ?? view.frame.width)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -115,7 +88,6 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
             let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width - 2 * 8, height: 1000))
             
             return .init(width: view.frame.width - 2 * 8, height: estimatedSize.height)
-            
         } else {
             return CGSize(width: view.frame.width - 2 * 8, height: 400)
         }
@@ -129,27 +101,10 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffsetY = collectionView.contentOffset.y
         
-        // get topBarHeight
-        let statusBarFrame: CGRect
-        let navigationBarFrame: CGRect
-
-        if #available(iOS 13.0, *) {
-            let keyWindowScene = UIApplication.shared.connectedScenes
-                .filter { $0.activationState == .foregroundActive }
-                .compactMap { $0 as? UIWindowScene }.first
-            statusBarFrame = keyWindowScene?.statusBarManager?.statusBarFrame ?? .zero
-        } else {
-            statusBarFrame = UIApplication.shared.statusBarFrame
-        }
-
-        navigationBarFrame = navigationController?.navigationBar.frame ?? .zero
-
-        let topBarHeight = statusBarFrame.height + navigationBarFrame.height
-        
-        let headerHeight = view.frame.width
+        let topBarHeight = getTopBarHeight()
         
         // total scroll distance for top bar dark to light appearance transition.
-        let offSetHeight = headerHeight - topBarHeight
+        let offSetHeight = headerHeight ?? view.frame.width - topBarHeight
         
         // offset ratio.
         var offSet = abs(contentOffsetY) / offSetHeight
@@ -171,9 +126,47 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         let navBarTextColor = UIColor(hue: 1, saturation: 0, brightness: 1 - offSet, alpha: 1)
         
         navigationController?.navigationBar.standardAppearance.backgroundColor = topBarBackgroundColor
-        
+
         navigationController?.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: navBarTextColor]
         navigationController?.navigationBar.tintColor = navBarTextColor
+    }
+    
+    // MARK: Private methods
+    /// setup status bar and nav bar with clear background and white text color.
+    private func setupTopBarAppearance() {
+        // move collection view up to beneath the nav bar and status bar.
+        let topBarHeight = getTopBarHeight()
+        collectionView.contentInset.top = -topBarHeight
+ 
+        // transparant top bars, with white colored nav bar title text and barButton text.
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.tintColor = .white
+        
+        // white text on status bar.
+        navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
+        navigationController?.navigationBar.barStyle = .black
+    }
+    
+    /// returns the sum of nav bar height and status bar height
+    private func getTopBarHeight() -> CGFloat {
+        let statusBarFrame: CGRect
+        let navigationBarFrame: CGRect
+
+        if #available(iOS 13.0, *) {
+            let keyWindowScene = UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .compactMap { $0 as? UIWindowScene }.first
+            statusBarFrame = keyWindowScene?.statusBarManager?.statusBarFrame ?? .zero
+        } else {
+            statusBarFrame = UIApplication.shared.statusBarFrame
+        }
+
+        navigationBarFrame = navigationController?.navigationBar.frame ?? .zero
+
+        return statusBarFrame.height + navigationBarFrame.height
     }
 }
 
