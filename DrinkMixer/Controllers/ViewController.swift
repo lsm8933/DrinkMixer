@@ -16,12 +16,18 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let layout = collectionViewLayout as! UICollectionViewFlowLayout
-        layout.scrollDirection = .horizontal
+        //let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        //layout.minimumInteritemSpacing
+        //layout.scrollDirection = .horizontal
         
         collectionView.register(DrinkCell.self, forCellWithReuseIdentifier: cellID)
         
         setupDrinks()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.overrideUserInterfaceStyle = .light
+        navigationController?.navigationBar.barStyle = .default
     }
     
     // MARK: UICollectionView data source
@@ -48,7 +54,11 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: UICollectionView delegate flowlayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 130, height: 200)
+        let cellWidth: CGFloat = (collectionView.frame.width - 2 * 8 - 2 * 10) / 3
+        let cellHeight: CGFloat = cellWidth / 3 * 5
+        
+        return CGSize(width: cellWidth, height: cellHeight)
+        //return CGSize(width: 130, height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
