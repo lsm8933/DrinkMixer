@@ -229,9 +229,9 @@ class IngredientsCell: BaseCell {
     
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         //self.contentView.frame = self.bounds
-        self.contentView.layoutIfNeeded()
+        contentView.layoutIfNeeded()
         
-        let nestedCollectionViewSize =  self.ingredientsViewController.collectionView.contentSize
+        let nestedCollectionViewSize =  ingredientsViewController.collectionView.contentSize
         
         return CGSize(width: nestedCollectionViewSize.width, height: nestedCollectionViewSize.height + 8 + 16 + 8 + headerLabel.intrinsicContentSize.height)
     }
