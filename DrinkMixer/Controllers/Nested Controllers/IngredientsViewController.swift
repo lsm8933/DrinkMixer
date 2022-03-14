@@ -8,6 +8,7 @@
 import UIKit
 
 class IngredientsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    // MARK: Properties
     var ingredientsToMeasure: [(String?, String?)]? {
         didSet {
             self.collectionView.reloadData()
@@ -24,6 +25,7 @@ class IngredientsViewController: UICollectionViewController, UICollectionViewDel
         collectionView.register(IngredientItemCell.self, forCellWithReuseIdentifier: cellId)
     }
     
+    // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = ingredientsToMeasure?.count {
             return count
@@ -40,6 +42,7 @@ class IngredientsViewController: UICollectionViewController, UICollectionViewDel
         return ingredientItemCell
     }
     
+    // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 35)
     }

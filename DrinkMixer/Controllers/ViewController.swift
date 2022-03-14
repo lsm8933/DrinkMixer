@@ -25,11 +25,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.overrideUserInterfaceStyle = .light
-        navigationController?.navigationBar.barStyle = .default
+        restoreTopBarAppearance()
     }
     
-    // MARK: UICollectionView data source
+    // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let cocktailDrinks = cocktailDrinks {
             return cocktailDrinks.count
@@ -51,7 +50,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    // MARK: UICollectionView delegate flowlayout
+    // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth: CGFloat = (collectionView.frame.width - 2 * 8 - 2 * 10) / 3
         let cellHeight: CGFloat = cellWidth / 3 * 5
@@ -63,10 +62,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
     }
-}
-
-extension ViewController {
-    func setupDrinks() {
+    
+    // MARK: - Private methods
+    private func setupDrinks() {
         Networking.getDrinks { categoryDrinks in
             self.cocktailDrinks = categoryDrinks.drinks
             
@@ -74,5 +72,16 @@ extension ViewController {
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    private func restoreTopBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        //appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+        //navigationController?.navigationBar.tintColor = .white
+        
+        navigationController?.navigationBar.overrideUserInterfaceStyle = .light
+        navigationController?.navigationBar.barStyle = .default
     }
 }

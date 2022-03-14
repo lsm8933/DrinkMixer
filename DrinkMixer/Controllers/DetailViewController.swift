@@ -49,7 +49,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         setupTopBarAppearance()
     }
     
-    // MARK: UICollectionView data source
+    // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let detailHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath ) as! DetailHeader
         if let imageURL = drinkItem?.imageURL {
@@ -74,7 +74,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         }
     }
     
-    // MARK: UICollectionView flowLayout delegate
+    // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: headerHeight ?? view.frame.width)
     }
@@ -105,7 +105,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         return UIEdgeInsets(top: 16, left: 8, bottom: 0, right: 8)
     }
     
-    // MARK: UIScrollView delegate
+    // MARK: - UIScrollViewDelegate
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffsetY = collectionView.contentOffset.y
         
@@ -139,7 +139,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
         navigationController?.navigationBar.tintColor = navBarTextColor
     }
     
-    // MARK: Private methods
+    // MARK: - Private methods
     /// setup status bar and nav bar with clear background and white text color.
     private func setupTopBarAppearance() {
         // move collection view up to beneath the nav bar and status bar.
