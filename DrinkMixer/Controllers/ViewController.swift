@@ -14,8 +14,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var cellID = "cellID"
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+        super.viewDidLoad()        
         //let layout = collectionViewLayout as! UICollectionViewFlowLayout
         //layout.minimumInteritemSpacing
         //layout.scrollDirection = .horizontal
