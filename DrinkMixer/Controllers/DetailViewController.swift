@@ -89,8 +89,15 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
             let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width - 2 * 8, height: 1000))
             
             return .init(width: view.frame.width - 2 * 8, height: estimatedSize.height)
-        } else {
-            return CGSize(width: view.frame.width - 2 * 8, height: 400)
+        } else { // indexPath.item == 0
+            let dummyCell = IngredientsCell(frame: .init(x: 0, y: 0, width: view.frame.width - 2 * 8, height: 1000))
+            
+            dummyCell.ingredientsViewController.ingredientsToMeasure = drinkItem?.ingredientsToMeasure
+            dummyCell.layoutIfNeeded()
+            
+            let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width - 2 * 8, height: 1000))
+            
+            return CGSize(width: view.frame.width - 2 * 8, height: estimatedSize.height)
         }
     }
     
@@ -218,5 +225,14 @@ class IngredientsCell: BaseCell {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": headerLabel]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": ingredientsViewController.collectionView!]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[v0]-16-[v1]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": headerLabel, "v1": ingredientsViewController.collectionView!]))
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
+        //self.contentView.frame = self.bounds
+        self.contentView.layoutIfNeeded()
+        
+        let nestedCollectionViewSize =  self.ingredientsViewController.collectionView.contentSize
+        
+        return CGSize(width: nestedCollectionViewSize.width, height: nestedCollectionViewSize.height + 8 + 16 + 8 + headerLabel.intrinsicContentSize.height)
     }
 }
