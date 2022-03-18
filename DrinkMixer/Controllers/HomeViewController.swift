@@ -24,7 +24,7 @@ class HomeViewController: UICollectionViewController {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
-                section.orthogonalScrollingBehavior = .groupPaging
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 section.contentInsets = .init(top: 0, leading: 8, bottom: 32, trailing: 0) //top 16 if has header
                 
                 return section
@@ -67,7 +67,12 @@ class HomeViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        switch section {
+        case 0:
+            return 12
+        default:
+            return 10
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -123,7 +128,7 @@ class DrinkSmallCell: BaseCell {
         stackView.alignment = .fill // drinkImageView's height equal to stackview's height
         //stackView.distribution = .fill
         
-        stackView.backgroundColor = .systemGray6
+        //stackView.backgroundColor = .systemGray6
         stackView.layer.cornerRadius = 6
         stackView.clipsToBounds = true
         
