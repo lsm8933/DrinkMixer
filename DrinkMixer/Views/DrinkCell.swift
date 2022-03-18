@@ -38,7 +38,7 @@ class DrinkCell: BaseCell {
     
     var nameLabel: UILabel = {
         let label = UILabel()
-        //label.text = "Margarita"
+        label.text = "Margarita"
         label.textColor = .black
         label.font = .boldSystemFont(ofSize: 16)
         //label.backgroundColor = .systemPink
@@ -47,8 +47,8 @@ class DrinkCell: BaseCell {
     
     var ingredientsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something"
-        //label.text = "Tequila"
+        //label.text = "Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something Tequila, triple sec, lime juice, salt... something something something"
+        label.text = "Tequila"
         label.font = .systemFont(ofSize: 14)
         label.textColor = .darkGray
         //label.backgroundColor = .cyan
