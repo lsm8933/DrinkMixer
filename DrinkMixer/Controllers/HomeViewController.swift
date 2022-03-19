@@ -7,11 +7,27 @@
 
 import UIKit
 
+enum CategoryNameTitle: String {
+    case cocktail = "Cocktail"
+    case ordinaryDrink = "Ordinary Drink"
+    case homemadeLiqueur = "Homemade Liqueur"
+    case punchPartyDrink = "Punch / Party Drink"
+    case shake = "Shake"
+    case cocoa = "Cocoa"
+    case shot = "Shot"
+    case beer = "Beer"
+    case softDrink = "Soft Drink"
+    case coffeeTea = "Coffee / Tea"
+}
+
 class HomeViewController: UICollectionViewController {
     
     private let sectionHeaderId = "sectionHeaderId"
     private let smallCellId = "smallCellId"
     private let drinkCellId = "drinkCellId"
+    
+    var categoryNameToCategoryDrinks = [CategoryNameTitle: CategoryDrinks]()
+    //var catetoryDrinks: CategoryDrinks?
     
     init() {
         let layout = UICollectionViewCompositionalLayout { sectionNumber, _ in
@@ -25,7 +41,7 @@ class HomeViewController: UICollectionViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = .init(top: 0, leading: 8, bottom: 32, trailing: 0) //top 16 if has header
+                section.contentInsets = .init(top: 0, leading: 16, bottom: 32, trailing: 8) // top: 16 if has header
                 
                 return section
                 
@@ -60,10 +76,12 @@ class HomeViewController: UICollectionViewController {
         collectionView.register(HomeCategoriesSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderId)
         collectionView.register(DrinkSmallCell.self, forCellWithReuseIdentifier: smallCellId)
         collectionView.register(DrinkCell.self, forCellWithReuseIdentifier: drinkCellId)
+        
+        setupDrinks()
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 8
+        return 3
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -71,12 +89,23 @@ class HomeViewController: UICollectionViewController {
         case 0:
             return 12
         default:
-            return 10
+            if categoryNameToCategoryDrinks.count > 0 {
+                return 10
+            }
+            return 0
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderId, for: indexPath)
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderId, for: indexPath) as! HomeCategoriesSectionHeader
+        switch indexPath.section {
+        case 1:
+            header.categoryNameTitle = .ordinaryDrink
+        case 2:
+            header.categoryNameTitle = .cocktail
+        default:
+            break
+        }
         return header
     }
     
@@ -86,11 +115,41 @@ class HomeViewController: UICollectionViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: smallCellId, for: indexPath) as! DrinkSmallCell
             return cell
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
+            cell.drinkItem = categoryNameToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
+            return cell
+        case 2:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
+            cell.drinkItem = categoryNameToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
+            return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
             return cell
         }
+    }
+    
+    
+    let dispatchGroup = DispatchGroup()
+    
+    private func setupDrinks() {
         
+        dispatchGroup.enter()
+        Networking.getDrinks(in: CategoryNameUrlString.ordinaryDrink.rawValue) { catetoryDrinks in
+            //self.catetoryDrinks = catetoryDrinks
+            self.categoryNameToCategoryDrinks[.ordinaryDrink] = catetoryDrinks
+            self.dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        Networking.getDrinks(in: CategoryNameUrlString.cocktail.rawValue) { catetoryDrinks in
+            self.categoryNameToCategoryDrinks[.cocktail] = catetoryDrinks
+            self.dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            self.collectionView.reloadData()
+        }
     }
     
 }
@@ -141,6 +200,12 @@ class DrinkSmallCell: BaseCell {
 }
 
 class HomeCategoriesSectionHeader: UICollectionReusableView {
+    var categoryNameTitle: CategoryNameTitle? {
+        didSet {
+            categoryNameLabel.text = categoryNameTitle?.rawValue
+        }
+    }
+    
     let categoryNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Category"
