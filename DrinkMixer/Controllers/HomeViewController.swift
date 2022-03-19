@@ -22,6 +22,7 @@ enum CategoryNameTitle: String {
 
 class HomeViewController: UICollectionViewController {
     
+    // MARK: Properties
     private let sectionHeaderId = "sectionHeaderId"
     private let smallCellId = "smallCellId"
     private let drinkCellId = "drinkCellId"
@@ -82,6 +83,10 @@ class HomeViewController: UICollectionViewController {
         setupDrinks()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        restoreTopBarAppearance()
+    }
+    
     // MARK: - UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
@@ -133,6 +138,30 @@ class HomeViewController: UICollectionViewController {
         }
     }
     
+    // MARK: UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        let detailVC = DetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        var drinkItem: DrinkItem?
+        
+        switch indexPath.section {
+        case 0:
+            drinkItem = popularCatetoryDrinks?.drinks[indexPath.item]
+        case 1:
+            drinkItem = categoryNameToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
+        case 2:
+            drinkItem = categoryNameToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
+        default:
+            break
+        }
+        
+        detailVC.drinkId = drinkItem?.id
+        detailVC.navigationItem.title = drinkItem?.name
+        
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     // MARK: - Private methods
     private func setupPopularDrinks() {
         popularCatetoryDrinks = CategoryDrinks.getPopularDrinks()
@@ -159,6 +188,15 @@ class HomeViewController: UICollectionViewController {
         dispatchGroup.notify(queue: DispatchQueue.main) {
             self.collectionView.reloadData()
         }
+    }
+    
+    private func restoreTopBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        navigationController?.navigationBar.standardAppearance = appearance
+        
+        navigationController?.navigationBar.overrideUserInterfaceStyle = .light
+        navigationController?.navigationBar.barStyle = .default
     }
 }
 

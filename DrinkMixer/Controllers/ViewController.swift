@@ -44,9 +44,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = DetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        //detailVC.drinkItem = cocktailDrinks?[indexPath.item]
+        
         detailVC.drinkId = cocktailDrinks?[indexPath.item].id
         detailVC.navigationItem.title = cocktailDrinks?[indexPath.item].name
+        
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
