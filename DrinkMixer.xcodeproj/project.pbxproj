@@ -22,6 +22,7 @@
 		9F0BD37527DC8D6800D20CF8 /* InstructionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BD37427DC8D6800D20CF8 /* InstructionCell.swift */; };
 		9F0BD37727DC8D8000D20CF8 /* CategoryDrinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BD37627DC8D8000D20CF8 /* CategoryDrinks.swift */; };
 		9F0BD37927DC8D9700D20CF8 /* DrinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BD37827DC8D9700D20CF8 /* DrinkItem.swift */; };
+		9F6A047F27E6375F0043BAE4 /* DrinkSmallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6A047E27E6375E0043BAE4 /* DrinkSmallCell.swift */; };
 		9FBFEC8F27DDFF8F00743BCA /* IngredientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFEC8E27DDFF8F00743BCA /* IngredientsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		9F0BD37427DC8D6800D20CF8 /* InstructionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionCell.swift; sourceTree = "<group>"; };
 		9F0BD37627DC8D8000D20CF8 /* CategoryDrinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDrinks.swift; sourceTree = "<group>"; };
 		9F0BD37827DC8D9700D20CF8 /* DrinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkItem.swift; sourceTree = "<group>"; };
+		9F6A047E27E6375E0043BAE4 /* DrinkSmallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkSmallCell.swift; sourceTree = "<group>"; };
 		9FBFEC8E27DDFF8F00743BCA /* IngredientsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 				9F0BD37027DC8D3800D20CF8 /* DrinkCell.swift */,
 				9F0BD37227DC8D5200D20CF8 /* BaseCell.swift */,
 				9F0BD37427DC8D6800D20CF8 /* InstructionCell.swift */,
+				9F6A047E27E6375E0043BAE4 /* DrinkSmallCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				9F0BD37327DC8D5200D20CF8 /* BaseCell.swift in Sources */,
 				9F0BD37727DC8D8000D20CF8 /* CategoryDrinks.swift in Sources */,
 				9F0BD36D27DC8CE000D20CF8 /* Networking.swift in Sources */,
+				9F6A047F27E6375F0043BAE4 /* DrinkSmallCell.swift in Sources */,
 				9F0BD36727DC8C1B00D20CF8 /* ViewController.swift in Sources */,
 				9FBFEC8F27DDFF8F00743BCA /* IngredientsViewController.swift in Sources */,
 				9F0BD35127DC897100D20CF8 /* SceneDelegate.swift in Sources */,
