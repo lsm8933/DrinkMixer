@@ -102,4 +102,10 @@ struct DrinkItem: Codable {
         case ingredientMeasure14 = "strMeasure14"
         case ingredientMeasure15 = "strMeasure15"
     }
+    
+    init(name: String?, id: String?, imageURL: String?) {
+        self.name = name
+        self.id = id
+        self.imageURL = imageURL
+    }
 }

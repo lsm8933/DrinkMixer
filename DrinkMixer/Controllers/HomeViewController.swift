@@ -27,7 +27,7 @@ class HomeViewController: UICollectionViewController {
     private let drinkCellId = "drinkCellId"
     
     var categoryNameToCategoryDrinks = [CategoryNameTitle: CategoryDrinks]()
-    //var catetoryDrinks: CategoryDrinks?
+    var popularCatetoryDrinks: CategoryDrinks?
     
     init() {
         let layout = UICollectionViewCompositionalLayout { sectionNumber, _ in
@@ -77,6 +77,7 @@ class HomeViewController: UICollectionViewController {
         collectionView.register(DrinkSmallCell.self, forCellWithReuseIdentifier: smallCellId)
         collectionView.register(DrinkCell.self, forCellWithReuseIdentifier: drinkCellId)
         
+        setupPopularDrinks()
         setupDrinks()
     }
     
@@ -114,6 +115,7 @@ class HomeViewController: UICollectionViewController {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: smallCellId, for: indexPath) as! DrinkSmallCell
+            cell.drinkItem = popularCatetoryDrinks?.drinks[indexPath.item]
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
@@ -129,9 +131,12 @@ class HomeViewController: UICollectionViewController {
         }
     }
     
+    private func setupPopularDrinks() {
+        popularCatetoryDrinks = CategoryDrinks.getPopularDrinks()
+        collectionView.reloadSections(IndexSet.init(integer: 0))
+    }
     
     let dispatchGroup = DispatchGroup()
-    
     private func setupDrinks() {
         
         dispatchGroup.enter()
@@ -155,9 +160,18 @@ class HomeViewController: UICollectionViewController {
 }
 
 class DrinkSmallCell: BaseCell {
+    var drinkItem: DrinkItem? {
+        didSet {
+            nameLabel.text = drinkItem?.name
+            
+            if let imageUrl = drinkItem?.imageURL {
+                drinkImageView.loadImageFromUrlString(urlString: imageUrl)
+            }
+        }
+    }
     
-    let drinkImageView: UIImageView = {
-        let iv = UIImageView()
+    let drinkImageView: UrlImageView = {
+        let iv = UrlImageView()
         iv.image = UIImage(named: "drink_margarita")
         iv.contentMode = .scaleAspectFill
         return iv

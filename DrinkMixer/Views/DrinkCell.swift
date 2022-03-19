@@ -10,17 +10,13 @@ import UIKit
 class DrinkCell: BaseCell {
     var drinkItem: DrinkItem? {
         didSet {
-
             guard let drinkItem = drinkItem else {
                 return
             }
-
-            if let name = drinkItem.name {
-                nameLabel.text = name
-            }
-            if let id = drinkItem.id {
-                ingredientsLabel.text = id
-            }
+            
+            nameLabel.text = drinkItem.name
+            ingredientsLabel.text = drinkItem.id
+            
             if let imageURL = drinkItem.imageURL {
                 drinkImageView.loadImageFromUrlString(urlString: imageURL)
             }
