@@ -210,9 +210,26 @@ class HomeCategoriesSectionHeader: UICollectionReusableView {
     
     let categoryNameLabel: UILabel = {
         let label = UILabel()
+//        label.backgroundColor = .systemTeal
         label.text = "Category"
         label.font = .boldSystemFont(ofSize: 26)
         return label
+    }()
+    
+    let moreButton: UIButton = {
+        let btn = UIButton()
+        
+        let configuration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))
+        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: configuration)?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        
+        btn.setImage(arrowImage, for: .normal)
+        
+//        btn.layer.borderColor = UIColor.red.cgColor
+//        btn.layer.borderWidth = 2
+        
+        btn.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        
+        return btn
     }()
     
     override init(frame: CGRect) {
@@ -220,17 +237,31 @@ class HomeCategoriesSectionHeader: UICollectionReusableView {
         //backgroundColor = .magenta
         
         categoryNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(categoryNameLabel)
+        moreButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        moreButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        let stackView = UIStackView(arrangedSubviews: [categoryNameLabel, moreButton])
+        stackView.spacing = 10
+        //stackView.distribution = .fillProportionally
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            categoryNameLabel.topAnchor.constraint(equalTo: topAnchor),
-            categoryNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-            categoryNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            categoryNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // TODO: put this in HomeVC? how to push to homeVC nav stack.
+    @objc func moreButtonTapped() {
+        print("moreButtonTapped")
     }
 }
