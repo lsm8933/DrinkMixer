@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class DrinkCell: BaseCell {
     var drinkItem: DrinkItem? {
@@ -18,13 +19,13 @@ class DrinkCell: BaseCell {
             ingredientsLabel.text = drinkItem.id
             
             if let imageURL = drinkItem.imageURL {
-                drinkImageView.loadImageFromUrlString(urlString: imageURL)
+                drinkImageView.sd_setImage(with: URL(string: imageURL))
             }
         }
     }
     
-    var drinkImageView: UrlImageView = {
-        let iv = UrlImageView()
+    var drinkImageView: UIImageView = {
+        let iv = UIImageView()
         iv.image = UIImage(named: "drink_margarita")
         iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 10

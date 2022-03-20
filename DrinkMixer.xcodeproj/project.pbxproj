@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49062413480C6EBC9E55BC8E /* libPods-DrinkMixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96FDD34F62F09719A2650313 /* libPods-DrinkMixer.a */; };
 		9F04E79D27E4748E0045AB69 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F04E79C27E4748E0045AB69 /* HomeViewController.swift */; };
 		9F0BD34F27DC897100D20CF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BD34E27DC897100D20CF8 /* AppDelegate.swift */; };
 		9F0BD35127DC897100D20CF8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BD35027DC897100D20CF8 /* SceneDelegate.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96FDD34F62F09719A2650313 /* libPods-DrinkMixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DrinkMixer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F04E79C27E4748E0045AB69 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9F0BD34B27DC897100D20CF8 /* DrinkMixer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkMixer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F0BD34E27DC897100D20CF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +48,8 @@
 		9F0BD37827DC8D9700D20CF8 /* DrinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkItem.swift; sourceTree = "<group>"; };
 		9F6A047E27E6375E0043BAE4 /* DrinkSmallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkSmallCell.swift; sourceTree = "<group>"; };
 		9FBFEC8E27DDFF8F00743BCA /* IngredientsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsViewController.swift; sourceTree = "<group>"; };
+		BE1A2A3A711216339F8E6A28 /* Pods-DrinkMixer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrinkMixer.release.xcconfig"; path = "Target Support Files/Pods-DrinkMixer/Pods-DrinkMixer.release.xcconfig"; sourceTree = "<group>"; };
+		ED2C07FFD27F3C93D0284C13 /* Pods-DrinkMixer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrinkMixer.debug.xcconfig"; path = "Target Support Files/Pods-DrinkMixer/Pods-DrinkMixer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,17 +57,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49062413480C6EBC9E55BC8E /* libPods-DrinkMixer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1533F8C80470C363405A2D7E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED2C07FFD27F3C93D0284C13 /* Pods-DrinkMixer.debug.xcconfig */,
+				BE1A2A3A711216339F8E6A28 /* Pods-DrinkMixer.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		30EC8BA1155B98A8B0F88472 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				96FDD34F62F09719A2650313 /* libPods-DrinkMixer.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9F0BD34227DC897100D20CF8 = {
 			isa = PBXGroup;
 			children = (
 				9F0BD34D27DC897100D20CF8 /* DrinkMixer */,
 				9F0BD34C27DC897100D20CF8 /* Products */,
+				1533F8C80470C363405A2D7E /* Pods */,
+				30EC8BA1155B98A8B0F88472 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +180,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9F0BD35F27DC897300D20CF8 /* Build configuration list for PBXNativeTarget "DrinkMixer" */;
 			buildPhases = (
+				32AED231E96941AEE705D7EF /* [CP] Check Pods Manifest.lock */,
 				9F0BD34727DC897100D20CF8 /* Sources */,
 				9F0BD34827DC897100D20CF8 /* Frameworks */,
 				9F0BD34927DC897100D20CF8 /* Resources */,
@@ -213,6 +239,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		32AED231E96941AEE705D7EF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DrinkMixer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9F0BD34727DC897100D20CF8 /* Sources */ = {
@@ -376,6 +427,7 @@
 		};
 		9F0BD36027DC897300D20CF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED2C07FFD27F3C93D0284C13 /* Pods-DrinkMixer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -403,6 +455,7 @@
 		};
 		9F0BD36127DC897300D20CF8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE1A2A3A711216339F8E6A28 /* Pods-DrinkMixer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

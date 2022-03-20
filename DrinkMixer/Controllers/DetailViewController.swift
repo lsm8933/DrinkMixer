@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class DetailViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -53,7 +54,7 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let detailHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath ) as! DetailHeader
         if let imageURL = drinkItem?.imageURL {
-            detailHeader.headerImageView.loadImageFromUrlString(urlString: imageURL)
+            detailHeader.headerImageView.sd_setImage(with: URL(string: imageURL))
         }
         return detailHeader
     }
@@ -180,8 +181,8 @@ class DetailViewController: UICollectionViewController, UICollectionViewDelegate
 
 class DetailHeader: BaseCell {
     
-    let headerImageView: UrlImageView = {
-        let iv = UrlImageView()
+    let headerImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         //iv.image = UIImage(named: "drink_margarita")
