@@ -70,7 +70,6 @@
 				ED2C07FFD27F3C93D0284C13 /* Pods-DrinkMixer.debug.xcconfig */,
 				BE1A2A3A711216339F8E6A28 /* Pods-DrinkMixer.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
