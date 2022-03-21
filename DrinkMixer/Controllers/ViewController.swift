@@ -19,6 +19,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var cellID = "cellID"
     
+    // MARK: UICollectionViewController
     override func viewDidLoad() {
         super.viewDidLoad()        
         //let layout = collectionViewLayout as! UICollectionViewFlowLayout

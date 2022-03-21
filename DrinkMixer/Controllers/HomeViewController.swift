@@ -58,6 +58,7 @@ class HomeViewController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: UICollectionViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         //collectionView.backgroundColor = .cyan
@@ -85,7 +86,7 @@ class HomeViewController: UICollectionViewController {
             return 12
         default:
             if drinkCategoryToCategoryDrinks.count > 0 {
-                return 10
+                return 15
             }
             return 0
         }
