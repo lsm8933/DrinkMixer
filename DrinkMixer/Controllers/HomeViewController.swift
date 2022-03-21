@@ -7,19 +7,6 @@
 
 import UIKit
 
-enum CategoryNameTitle: String {
-    case cocktail = "Cocktail"
-    case ordinaryDrink = "Ordinary Drink"
-    case homemadeLiqueur = "Homemade Liqueur"
-    case punchPartyDrink = "Punch / Party Drink"
-    case shake = "Shake"
-    case cocoa = "Cocoa"
-    case shot = "Shot"
-    case beer = "Beer"
-    case softDrink = "Soft Drink"
-    case coffeeTea = "Coffee / Tea"
-}
-
 class HomeViewController: UICollectionViewController {
     
     // MARK: Properties
@@ -27,7 +14,7 @@ class HomeViewController: UICollectionViewController {
     private let smallCellId = "smallCellId"
     private let drinkCellId = "drinkCellId"
     
-    var categoryNameToCategoryDrinks = [CategoryNameTitle: CategoryDrinks]()
+    var drinkCategoryToCategoryDrinks = [DrinkCategory: CategoryDrinks]()
     var popularCatetoryDrinks: CategoryDrinks?
     
     // MARK: - UICollectionViewCompositionalLayout
@@ -97,7 +84,7 @@ class HomeViewController: UICollectionViewController {
         case 0:
             return 12
         default:
-            if categoryNameToCategoryDrinks.count > 0 {
+            if drinkCategoryToCategoryDrinks.count > 0 {
                 return 10
             }
             return 0
@@ -109,9 +96,9 @@ class HomeViewController: UICollectionViewController {
         
         switch indexPath.section {
         case 1:
-            header.categoryNameTitle = .ordinaryDrink
+            header.drinkCategory = .ordinaryDrink
         case 2:
-            header.categoryNameTitle = .cocktail
+            header.drinkCategory = .cocktail
         default:
             break
         }
@@ -129,11 +116,11 @@ class HomeViewController: UICollectionViewController {
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
-            cell.drinkItem = categoryNameToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
+            cell.drinkItem = drinkCategoryToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
-            cell.drinkItem = categoryNameToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
+            cell.drinkItem = drinkCategoryToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
@@ -152,9 +139,9 @@ class HomeViewController: UICollectionViewController {
         case 0:
             drinkItem = popularCatetoryDrinks?.drinks[indexPath.item]
         case 1:
-            drinkItem = categoryNameToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
+            drinkItem = drinkCategoryToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
         case 2:
-            drinkItem = categoryNameToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
+            drinkItem = drinkCategoryToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
         default:
             break
         }
@@ -176,15 +163,15 @@ class HomeViewController: UICollectionViewController {
     private func setupDrinks() {
         
         dispatchGroup.enter()
-        Networking.getDrinks(in: CategoryNameUrlString.ordinaryDrink.rawValue) { catetoryDrinks in
+        Networking.getDrinks(in: DrinkCategory.ordinaryDrink.toUrlString) { catetoryDrinks in
             //self.catetoryDrinks = catetoryDrinks
-            self.categoryNameToCategoryDrinks[.ordinaryDrink] = catetoryDrinks
+            self.drinkCategoryToCategoryDrinks[.ordinaryDrink] = catetoryDrinks
             self.dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        Networking.getDrinks(in: CategoryNameUrlString.cocktail.rawValue) { catetoryDrinks in
-            self.categoryNameToCategoryDrinks[.cocktail] = catetoryDrinks
+        Networking.getDrinks(in: DrinkCategory.cocktail.toUrlString) { catetoryDrinks in
+            self.drinkCategoryToCategoryDrinks[.cocktail] = catetoryDrinks
             self.dispatchGroup.leave()
         }
         
@@ -204,24 +191,25 @@ class HomeViewController: UICollectionViewController {
 }
 
 extension HomeViewController: HomeCategoriesSectionHeaderDelegate {
-    func moreButtonTapped() {
+    func moreButtonTapped(category: DrinkCategory) {
         let viewController = ViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        viewController.drinkCategory = category
         
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
 protocol HomeCategoriesSectionHeaderDelegate: AnyObject {
-    func moreButtonTapped()
+    func moreButtonTapped(category: DrinkCategory)
 }
 
 
 class HomeCategoriesSectionHeader: UICollectionReusableView {
     weak var delegate: HomeCategoriesSectionHeaderDelegate?
     
-    var categoryNameTitle: CategoryNameTitle? {
+    var drinkCategory: DrinkCategory? {
         didSet {
-            categoryNameLabel.text = categoryNameTitle?.rawValue
+            categoryNameLabel.text = drinkCategory?.toTitleString
         }
     }
     
@@ -279,7 +267,9 @@ class HomeCategoriesSectionHeader: UICollectionReusableView {
     
     // TODO: put this in HomeVC? how to push to homeVC nav stack.
     @objc func moreButtonTapped() {
-        // print("moreButtonTapped")
-        delegate?.moreButtonTapped()
+        guard let drinkCategory = drinkCategory else {
+            return
+        }
+        delegate?.moreButtonTapped(category: drinkCategory)
     }
 }

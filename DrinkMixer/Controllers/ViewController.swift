@@ -9,6 +9,12 @@ import UIKit
 
 class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
+    var drinkCategory: DrinkCategory? {
+        didSet {
+            setupDrinks(category: drinkCategory)
+        }
+    }
+    
     var cocktailDrinks: [DrinkItem]?
     
     var cellID = "cellID"
@@ -20,8 +26,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         //layout.scrollDirection = .horizontal
         
         collectionView.register(DrinkCell.self, forCellWithReuseIdentifier: cellID)
-        
-        setupDrinks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,8 +69,15 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     // MARK: - Private methods
-    private func setupDrinks() {
-        Networking.getDrinks { categoryDrinks in
+    private func setupDrinks(category: DrinkCategory?) {
+        guard let category = category else {
+            return
+        }
+        
+        navigationItem.title = category.toTitleString
+        let categoryUrlString = category.toUrlString
+        
+        Networking.getDrinks(in: categoryUrlString) { categoryDrinks in
             self.cocktailDrinks = categoryDrinks.drinks
             
             DispatchQueue.main.async {

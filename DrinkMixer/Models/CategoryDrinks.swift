@@ -7,6 +7,60 @@
 
 import Foundation
 
+enum DrinkCategory {
+    case cocktail, ordinaryDrink, homemadeLiqueur, punchPartyDrink, shake, cocoa, shot, beer, softDrink, coffeeTea
+    
+    var toTitleString: String {
+        switch self {
+        case .cocktail:
+            return "Cocktail"
+        case .ordinaryDrink:
+            return "Ordinary Drink"
+        case .homemadeLiqueur:
+            return "Homemade Liqueur"
+        case .punchPartyDrink:
+            return "Punch / Party Drink"
+        case .shake:
+            return "Shake"
+        case .cocoa:
+            return "Cocoa"
+        case .shot:
+            return "Shot"
+        case .beer:
+            return "Beer"
+        case .softDrink:
+            return "Soft Drink"
+        case .coffeeTea:
+            return "Coffee / Tea"
+        }
+    }
+    
+    var toUrlString: String {
+        switch self {
+        case .cocktail:
+            return "Cocktail"
+        case .ordinaryDrink:
+            return "Ordinary_Drink"
+        case .homemadeLiqueur:
+            return "Homemade_Liqueur"
+        case .punchPartyDrink:
+            return "Punch_/_Party Drink"
+        case .shake:
+            return "Shake"
+        case .cocoa:
+            return "Cocoa"
+        case .shot:
+            return "Shot"
+        case .beer:
+            return "Beer"
+        case .softDrink:
+            return "Soft_Drink"
+        case .coffeeTea:
+            return "Coffee_/_Tea"
+        }
+    }
+}
+
 struct CategoryDrinks: Codable {
     var drinks: [DrinkItem]
     

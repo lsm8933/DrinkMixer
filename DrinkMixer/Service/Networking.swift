@@ -8,19 +8,6 @@
 import Foundation
 import UIKit
 
-enum CategoryNameUrlString: String {
-    case cocktail = "Cocktail"
-    case ordinaryDrink = "Ordinary_Drink"
-    case homemadeLiqueur = "Homemade_Liqueur"
-    case punchPartyDrink = "Punch_/_Party Drink"
-    case shake = "Shake"
-    case cocoa = "Cocoa"
-    case shot = "Shot"
-    case beer = "Beer"
-    case softDrink = "Soft_Drink"
-    case coffeeTea = "Coffee_/_Tea"
-}
-
 class Networking {
     static func getDrinks(in category: String = "Ordinary_Drink", completion: @escaping (CategoryDrinks) -> Void ) {
         let urlString = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(category)"
