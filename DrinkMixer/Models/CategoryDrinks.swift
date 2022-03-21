@@ -8,7 +8,7 @@
 import Foundation
 
 enum DrinkCategory {
-    case popular, cocktail, ordinaryDrink, homemadeLiqueur, punchPartyDrink, shake, cocoa, shot, beer, softDrink, coffeeTea
+    case popular, cocktail, ordinaryDrink, homemadeLiqueur, punchPartyDrink, shake, cocoa, shot, beer, softDrink, coffeeTea, otherUnknown
     
     var toTitleString: String {
         switch self {
@@ -34,6 +34,8 @@ enum DrinkCategory {
             return "Soft Drink"
         case .coffeeTea:
             return "Coffee / Tea"
+        case .otherUnknown:
+            return "Other / Unknown"
         }
     }
     
@@ -48,7 +50,7 @@ enum DrinkCategory {
         case .homemadeLiqueur:
             return "Homemade_Liqueur"
         case .punchPartyDrink:
-            return "Punch_/_Party Drink"
+            return "Punch_/_Party_Drink"
         case .shake:
             return "Shake"
         case .cocoa:
@@ -61,6 +63,8 @@ enum DrinkCategory {
             return "Soft_Drink"
         case .coffeeTea:
             return "Coffee_/_Tea"
+        case .otherUnknown:
+            return "Other/Unknown"
         }
     }
 }

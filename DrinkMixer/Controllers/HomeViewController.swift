@@ -13,6 +13,10 @@ class HomeViewController: UICollectionViewController {
     private let sectionHeaderId = "sectionHeaderId"
     private let smallCellId = "smallCellId"
     private let drinkCellId = "drinkCellId"
+
+    let drinkCategories: [DrinkCategory] = [
+        .popular, .cocktail, .ordinaryDrink, .punchPartyDrink, .shake, .shot, .homemadeLiqueur, .beer, .softDrink, .coffeeTea, .cocoa, .otherUnknown
+    ]
     
     var drinkCategoryToCategoryDrinks = [DrinkCategory: CategoryDrinks]()
     var popularCatetoryDrinks: CategoryDrinks?
@@ -77,7 +81,7 @@ class HomeViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 12
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -86,7 +90,10 @@ class HomeViewController: UICollectionViewController {
             return 12
         default:
             if drinkCategoryToCategoryDrinks.count > 0 {
-                return 15
+                let drinkCategory = drinkCategories[section]
+                let numberOfResultsInCategory = drinkCategoryToCategoryDrinks[drinkCategory]?.drinks.count
+                
+                return min(15, numberOfResultsInCategory ?? 0)
             }
             return 0
         }
@@ -95,11 +102,12 @@ class HomeViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderId, for: indexPath) as! HomeCategoriesSectionHeader
         
-        switch indexPath.section {
-        case 1:
-            header.drinkCategory = .ordinaryDrink
-        case 2:
-            header.drinkCategory = .cocktail
+        let sectionNumber = indexPath.section
+        switch sectionNumber {
+        case 0:
+            break
+        case 1..<12:
+            header.drinkCategory = drinkCategories[sectionNumber]
         default:
             break
         }
@@ -110,19 +118,20 @@ class HomeViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        switch indexPath.section {
+        let sectionNumber = indexPath.section
+        switch sectionNumber {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: smallCellId, for: indexPath) as! DrinkSmallCell
             cell.drinkItem = popularCatetoryDrinks?.drinks[indexPath.item]
             return cell
-        case 1:
+            
+        case 1..<12:
+            let drinkCategory = drinkCategories[sectionNumber]
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
-            cell.drinkItem = drinkCategoryToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
+            cell.drinkItem = drinkCategoryToCategoryDrinks[drinkCategory]?.drinks[indexPath.item]
             return cell
-        case 2:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
-            cell.drinkItem = drinkCategoryToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
-            return cell
+
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: drinkCellId, for: indexPath) as! DrinkCell
             return cell
@@ -139,10 +148,9 @@ class HomeViewController: UICollectionViewController {
         switch indexPath.section {
         case 0:
             drinkItem = popularCatetoryDrinks?.drinks[indexPath.item]
-        case 1:
-            drinkItem = drinkCategoryToCategoryDrinks[.ordinaryDrink]?.drinks[indexPath.item]
-        case 2:
-            drinkItem = drinkCategoryToCategoryDrinks[.cocktail]?.drinks[indexPath.item]
+        case 1..<12:
+            let drinkCategory = drinkCategories[indexPath.section]
+            drinkItem = drinkCategoryToCategoryDrinks[drinkCategory]?.drinks[indexPath.item]
         default:
             break
         }
@@ -162,17 +170,14 @@ class HomeViewController: UICollectionViewController {
     let dispatchGroup = DispatchGroup()
     
     private func setupDrinks() {
-        
-        dispatchGroup.enter()
-        Networking.getDrinks(in: DrinkCategory.ordinaryDrink.toUrlString) { catetoryDrinks in
-            self.drinkCategoryToCategoryDrinks[.ordinaryDrink] = catetoryDrinks
-            self.dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        Networking.getDrinks(in: DrinkCategory.cocktail.toUrlString) { catetoryDrinks in
-            self.drinkCategoryToCategoryDrinks[.cocktail] = catetoryDrinks
-            self.dispatchGroup.leave()
+        for i in 1..<12 {
+            let drinkCategory = drinkCategories[i]
+
+            dispatchGroup.enter()
+            Networking.getDrinks(in: drinkCategory.toUrlString) { catetoryDrinks in
+                self.drinkCategoryToCategoryDrinks[drinkCategory] = catetoryDrinks
+                self.dispatchGroup.leave()
+            }
         }
         
         dispatchGroup.notify(queue: DispatchQueue.main) {
