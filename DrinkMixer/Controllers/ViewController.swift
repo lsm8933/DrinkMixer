@@ -78,9 +78,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     private func restoreTopBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
-        //appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         navigationController?.navigationBar.standardAppearance = appearance
-        //navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .black
         
         navigationController?.navigationBar.overrideUserInterfaceStyle = .light
         navigationController?.navigationBar.barStyle = .default

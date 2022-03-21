@@ -106,6 +106,7 @@ class HomeViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderId, for: indexPath) as! HomeCategoriesSectionHeader
+        
         switch indexPath.section {
         case 1:
             header.categoryNameTitle = .ordinaryDrink
@@ -114,6 +115,8 @@ class HomeViewController: UICollectionViewController {
         default:
             break
         }
+        header.delegate = self
+        
         return header
     }
     
@@ -200,8 +203,22 @@ class HomeViewController: UICollectionViewController {
     }
 }
 
+extension HomeViewController: HomeCategoriesSectionHeaderDelegate {
+    func moreButtonTapped() {
+        let viewController = ViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+protocol HomeCategoriesSectionHeaderDelegate: AnyObject {
+    func moreButtonTapped()
+}
+
 
 class HomeCategoriesSectionHeader: UICollectionReusableView {
+    weak var delegate: HomeCategoriesSectionHeaderDelegate?
+    
     var categoryNameTitle: CategoryNameTitle? {
         didSet {
             categoryNameLabel.text = categoryNameTitle?.rawValue
@@ -262,6 +279,7 @@ class HomeCategoriesSectionHeader: UICollectionReusableView {
     
     // TODO: put this in HomeVC? how to push to homeVC nav stack.
     @objc func moreButtonTapped() {
-        print("moreButtonTapped")
+        // print("moreButtonTapped")
+        delegate?.moreButtonTapped()
     }
 }
