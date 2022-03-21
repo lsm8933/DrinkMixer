@@ -58,7 +58,7 @@ class HomeViewController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: UICollectionViewController
+    // MARK: - UICollectionViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         //collectionView.backgroundColor = .cyan
@@ -77,7 +77,7 @@ class HomeViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 12
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -165,7 +165,6 @@ class HomeViewController: UICollectionViewController {
         
         dispatchGroup.enter()
         Networking.getDrinks(in: DrinkCategory.ordinaryDrink.toUrlString) { catetoryDrinks in
-            //self.catetoryDrinks = catetoryDrinks
             self.drinkCategoryToCategoryDrinks[.ordinaryDrink] = catetoryDrinks
             self.dispatchGroup.leave()
         }
@@ -266,7 +265,6 @@ class HomeCategoriesSectionHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: put this in HomeVC? how to push to homeVC nav stack.
     @objc func moreButtonTapped() {
         guard let drinkCategory = drinkCategory else {
             return

@@ -8,10 +8,12 @@
 import Foundation
 
 enum DrinkCategory {
-    case cocktail, ordinaryDrink, homemadeLiqueur, punchPartyDrink, shake, cocoa, shot, beer, softDrink, coffeeTea
+    case popular, cocktail, ordinaryDrink, homemadeLiqueur, punchPartyDrink, shake, cocoa, shot, beer, softDrink, coffeeTea
     
     var toTitleString: String {
         switch self {
+        case .popular:
+            return "Popular Drinks"
         case .cocktail:
             return "Cocktail"
         case .ordinaryDrink:
@@ -37,6 +39,8 @@ enum DrinkCategory {
     
     var toUrlString: String {
         switch self {
+        case .popular:
+            return ""
         case .cocktail:
             return "Cocktail"
         case .ordinaryDrink:
