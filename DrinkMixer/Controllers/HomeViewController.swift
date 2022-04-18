@@ -167,7 +167,7 @@ class HomeViewController: UICollectionViewController {
         collectionView.reloadSections(IndexSet.init(integer: 0))
     }
     
-    let dispatchGroup = DispatchGroup()
+    private let dispatchGroup = DispatchGroup()
     
     private func setupDrinks() {
         for i in 1..<12 {
