@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     // MARK: Properties
     var drinkCategory: DrinkCategory? {
         didSet {
@@ -15,18 +15,20 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    var allCocktailDrinks: [DrinkItem]?
     var cocktailDrinks: [DrinkItem]?
     
     var cellID = "cellID"
     
+    var searchController = UISearchController(searchResultsController: nil)
+    
     // MARK: - UICollectionViewController
     override func viewDidLoad() {
-        super.viewDidLoad()        
-        //let layout = collectionViewLayout as! UICollectionViewFlowLayout
-        //layout.minimumInteritemSpacing
-        //layout.scrollDirection = .horizontal
+        super.viewDidLoad()
         
         collectionView.register(DrinkCell.self, forCellWithReuseIdentifier: cellID)
+        
+        setupSearch()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,8 +71,33 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
     }
     
+    // MARK: - UISearchBarDelegate methods
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let allCocktailDrinks = allCocktailDrinks else {
+            return
+        }
+        
+        if searchText == "" {
+            resetToFullDrinksCollection()
+            return
+        }
+        
+        cocktailDrinks = allCocktailDrinks.filter({ drinkItem in
+            guard let name = drinkItem.name else {
+                return false
+            }
+            
+            return name.localizedCaseInsensitiveContains(searchText)
+        })
+        collectionView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        resetToFullDrinksCollection()
+    }
+    
     // MARK: - Private methods
-    private func setupDrinks(category: DrinkCategory?) {
+    fileprivate func setupDrinks(category: DrinkCategory?) {
         guard let category = category else {
             return
         }
@@ -79,7 +106,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let categoryUrlString = category.toUrlString
         
         Networking.getDrinks(in: categoryUrlString) { categoryDrinks in
-            self.cocktailDrinks = categoryDrinks.drinks
+            self.allCocktailDrinks = categoryDrinks.drinks
+            self.cocktailDrinks = self.allCocktailDrinks
             
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -87,7 +115,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    private func restoreTopBarAppearance() {
+    fileprivate func resetToFullDrinksCollection() {
+        cocktailDrinks = allCocktailDrinks
+        collectionView.reloadData()
+    }
+    
+    fileprivate func setupSearch() {
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+        
+        // navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    fileprivate func restoreTopBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
